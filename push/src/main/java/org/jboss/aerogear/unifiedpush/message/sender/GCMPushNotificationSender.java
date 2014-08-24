@@ -125,7 +125,7 @@ public class GCMPushNotificationSender implements PushNotificationSender {
         MulticastResult multicastResult = sender.send(gcmMessage, registrationIDs, 0);
 
         // after sending, let's identify the inactive/invalid registrationIDs and trigger their deletion:
-        cleanupInvalidRegistrationIDsForVariant(androidVariant.getVariantID(), multicastResult, registrationIDs);
+        //cleanupInvalidRegistrationIDsForVariant(androidVariant.getVariantID(), multicastResult, registrationIDs);
     }
 
     /**

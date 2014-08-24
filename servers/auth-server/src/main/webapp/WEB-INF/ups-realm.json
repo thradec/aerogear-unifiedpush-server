@@ -1,65 +1,69 @@
 {
-    "realm": "aerogear",
-    "enabled": true,
-    "accessTokenLifespan": 60,
-    "accessCodeLifespan": 60,
-    "accessCodeLifespanUserAction": 300,
-    "ssoSessionIdleTimeout": 600,
-    "ssoSessionMaxLifespan": 36000,
-    "sslRequired": "external",
-    "registrationAllowed": false,
-    "social": false,
-    "adminTheme": "aerogear",
-    "accountTheme": "aerogear",
-    "loginTheme": "aerogear",
-    "updateProfileOnInitialSocialLogin": false,
-    "requiredCredentials": [ "password" ],
-    "users" : [
-        {
-            "username" : "admin",
-            "enabled": true,
-            "credentials" : [
-                { "type" : "password",
-                    "value" : "123" }
-            ],
-            "requiredActions": [
-                "UPDATE_PASSWORD"
-            ],
-            "realmRoles": [ "admin" ],
-            "applicationRoles": {
-               "realm-management": [ "realm-admin" ],
-                "account": [ "manage-account" ]
-            }
-        }
-    ],
-    "roles" : {
-        "realm" : [
-            {
-                "name": "admin",
-                "description": "Administrator privileges"
-            }
-        ]
-    },
-    "scopeMappings": [
-        {
-            "client": "unified-push-server-js",
-            "roles": ["admin"]
-        }
-    ],
-    "applications": [
-        {
-            "name": "unified-push-server",
-            "enabled": true,
-            "bearerOnly": true
-        },
-        {
-            "name": "unified-push-server-js",
-            "enabled": true,
-            "publicClient": true,
-            "baseUrl": "/ag-push",
-            "redirectUris": [
-                "/ag-push/*"
-            ]
-        }
-    ]
+ "accountTheme": "aerogear",
+ "enabled": true,
+ "adminTheme": "aerogear",
+ "users": [{
+  "enabled": true,
+  "username": "admin",
+  "applicationRoles": {
+   "account": ["manage-account"],
+   "realm-management": ["realm-admin"]
+  },
+  "credentials": [{
+   "value": "123",
+   "type": "password"
+  }],
+  "realmRoles": ["admin"]
+ }],
+ "requiredCredentials": ["password"],
+ "registrationAllowed": false,
+ "loginTheme": "aerogear",
+ "oauthClients": [{
+  "enabled": true,
+  "claims": {"username": true},
+  "directGrantsOnly": true,
+  "publicClient": true,
+  "name": "integration-tests"
+ }],
+ "accessCodeLifespanUserAction": 3600,
+ "updateProfileOnInitialSocialLogin": false,
+ "scopeMappings": [
+  {
+   "client": "unified-push-server-js",
+   "roles": ["admin"]
+  },
+  {
+   "client": "integration-tests",
+   "roles": [
+    "user",
+    "admin"
+   ]
+  }
+ ],
+ "sslRequired": "none",
+ "realm": "aerogear",
+ "passwordCredentialGrantAllowed": true,
+ "social": false,
+ "roles": {"realm": [{
+  "description": "Administrator privileges",
+  "name": "admin"
+ }]},
+ "accessCodeLifespan": 3600,
+ "applications": [
+  {
+   "enabled": true,
+   "bearerOnly": true,
+   "name": "unified-push-server"
+  },
+  {
+   "baseUrl": "/ag-push",
+   "enabled": true,
+   "publicClient": true,
+   "name": "unified-push-server-js",
+   "redirectUris": ["/ag-push/*"]
+  }
+ ],
+ "ssoSessionMaxLifespan": 360000,
+ "accessTokenLifespan": 36000,
+ "ssoSessionIdleTimeout": 36000
 }

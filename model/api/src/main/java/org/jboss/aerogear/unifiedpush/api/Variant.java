@@ -17,11 +17,15 @@
 package org.jboss.aerogear.unifiedpush.api;
 
 import javax.validation.constraints.Size;
+
+import org.codehaus.jackson.annotate.JsonTypeInfo;
+
 import java.util.UUID;
 
 /**
  * Logical construct which matches a mobile app in the appstore.
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS)
 public abstract class Variant extends BaseModel {
     private static final long serialVersionUID = -5028062942838899201L;
 
@@ -42,8 +46,9 @@ public abstract class Variant extends BaseModel {
      */
     public abstract VariantType getType();
 
-    //ugly way to make it a immutable property
-    public void setType(VariantType type) {}
+    // ugly way to make it a immutable property
+    public void setType(VariantType type) {
+    }
 
     public String getName() {
         return this.name;

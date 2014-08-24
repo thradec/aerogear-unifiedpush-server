@@ -16,6 +16,7 @@
  */
 package org.jboss.aerogear.unifiedpush.api;
 
+import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonValue;
 
 /**
@@ -24,17 +25,17 @@ import org.codehaus.jackson.annotate.JsonValue;
 public enum VariantType {
 
     /**
-     * The type identifier for our Android variants. 
+     * The type identifier for our Android variants.
      */
     ANDROID("android"),
 
     /**
-     * The type identifier for our iOS variants. 
+     * The type identifier for our iOS variants.
      */
     IOS("ios"),
 
     /**
-     * The type identifier for our SimplePush variants. 
+     * The type identifier for our SimplePush variants.
      */
     SIMPLE_PUSH("simplePush"),
 
@@ -60,6 +61,16 @@ public enum VariantType {
     @JsonValue
     public String getTypeName() {
         return typeName;
+    }
+
+    @JsonCreator
+    public static VariantType forTypeName(String typeName) {
+        for (VariantType type : values()) {
+            if (type.getTypeName().equals(typeName)) {
+                return type;
+            }
+        }
+        throw new RuntimeException("Variant type " + typeName + " does not exist.");
     }
 
 }

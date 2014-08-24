@@ -40,6 +40,8 @@ public abstract class AbstractBaseServiceTest {
     @Stateful
     public static class EntityManagerProducer implements Serializable {
 
+        private static final long serialVersionUID = 1L;
+
         {
             EntityManagerFactory emf = Persistence.createEntityManagerFactory("UnifiedPush");
             entityManager = emf.createEntityManager();

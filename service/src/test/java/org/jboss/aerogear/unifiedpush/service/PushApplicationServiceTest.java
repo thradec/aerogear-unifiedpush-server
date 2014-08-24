@@ -16,6 +16,10 @@
  */
 package org.jboss.aerogear.unifiedpush.service;
 
+import java.util.UUID;
+
+import javax.inject.Inject;
+
 import org.apache.openejb.jee.Beans;
 import org.apache.openejb.junit.ApplicationComposer;
 import org.apache.openejb.testing.Module;
@@ -24,9 +28,6 @@ import org.jboss.aerogear.unifiedpush.jpa.dao.impl.JPAPushApplicationDao;
 import org.jboss.aerogear.unifiedpush.service.impl.PushApplicationServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import javax.inject.Inject;
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -39,6 +40,7 @@ public class PushApplicationServiceTest extends AbstractBaseServiceTest {
     @Module
     public Beans getBeans() {
         final Beans beans = new Beans();
+        beans.addManagedClass(AbstractBaseServiceTest.EntityManagerProducer.class);
         beans.addManagedClass(PushApplicationServiceImpl.class);
         beans.addManagedClass(JPAPushApplicationDao.class);
 
