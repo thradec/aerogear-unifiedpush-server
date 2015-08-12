@@ -2,10 +2,8 @@ using AeroGear.Push;
 
 protected async override void OnLaunched(LaunchActivatedEventArgs e)
 {
-  PushConfig pushConfig = new PushConfig() { UnifiedPushUri = new Uri("{{ contextPath }}"), VariantId = "{{ variant.variantID }}", VariantSecret = "{{ variant.secret }}" };
-  Registration registration = new MpnsRegistration();
-  registration.PushReceivedEvent += HandleNotification;
-  await registration.Register(pushConfig);
+  await FHClient.Init();
+  await FHClient.RegisterPush(HandleNotification);
 
   ...
 }
