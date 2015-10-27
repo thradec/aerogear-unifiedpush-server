@@ -16,6 +16,16 @@
  */
 package org.jboss.aerogear.unifiedpush.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
+import javax.ejb.Asynchronous;
+import javax.ejb.Stateless;
+import javax.enterprise.inject.Instance;
+import javax.inject.Inject;
+
 import org.jboss.aerogear.unifiedpush.api.Category;
 import org.jboss.aerogear.unifiedpush.api.Installation;
 import org.jboss.aerogear.unifiedpush.api.Variant;
@@ -24,17 +34,9 @@ import org.jboss.aerogear.unifiedpush.dao.CategoryDao;
 import org.jboss.aerogear.unifiedpush.dao.InstallationDao;
 import org.jboss.aerogear.unifiedpush.dao.ResultsStream;
 import org.jboss.aerogear.unifiedpush.service.ClientInstallationService;
+import org.jboss.aerogear.unifiedpush.service.GenericVariantService;
 import org.jboss.aerogear.unifiedpush.service.annotations.LoggedIn;
 import org.jboss.aerogear.unifiedpush.utils.AeroGearLogger;
-
-import javax.ejb.Asynchronous;
-import javax.ejb.Stateless;
-import javax.enterprise.inject.Instance;
-import javax.inject.Inject;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 /**
  * (Default) implementation of the {@code ClientInstallationService} interface.
@@ -47,6 +49,9 @@ public class ClientInstallationServiceImpl implements ClientInstallationService 
 
     @Inject
     private InstallationDao installationDao;
+    
+    @Inject
+    private GenericVariantService variantService;
 
     @Inject
     private CategoryDao categoryDao;
@@ -246,4 +251,28 @@ public class ClientInstallationServiceImpl implements ClientInstallationService 
         // store Installation entity
         installationDao.create(entity);
     }
+
+    @Override
+    public void generateInstalations() {
+        Variant variant1 = variantService.findByVariantID("29511927-d2bb-4497-bf84-9105ea5142c2");
+        if( variant1 == null  ) {
+            throw new RuntimeException("variant NULL");
+        }
+        for (int i = 0; i < 1000; i++) {
+            String id = UUID.randomUUID().toString();
+            Installation installation = new Installation();
+            installation.setId(id);
+            installation.setDeviceToken(id+id+id); // min 100 chars
+            installation.setVariant(variant1);
+            installation.setDeviceType("foo");
+            installation.setOperatingSystem("bar");
+            installation.setOsVersion("1.2.3");
+
+            installationDao.create(installation);
+        }
+    }
+    
+    public static void main(String[] args) {
+    }
+    
 }

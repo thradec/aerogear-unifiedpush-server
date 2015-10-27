@@ -51,7 +51,13 @@ public class MessageHolderWithTokensProducer extends AbstractJMSMessageProducer 
     private Queue wnsTokenBatchQueue;
 
     public void queueMessageVariantForProcessing(@Observes @DispatchToQueue MessageHolderWithTokens msg) {
+        long start = System.currentTimeMillis();
         sendTransacted(selectQueue(msg.getVariant().getType()), msg);
+        long stop = System.currentTimeMillis();
+
+        if( stop-start > 5*1000 ) {
+            System.out.println("====== " + Thread.currentThread().getId() + " > MessageHolderWithTokensProducer.queueMessageVariantForProcessing() BLOCKED !!!");
+        }
     }
 
     private Queue selectQueue(VariantType variantType) {

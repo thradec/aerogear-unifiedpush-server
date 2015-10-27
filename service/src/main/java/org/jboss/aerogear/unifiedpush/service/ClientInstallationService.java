@@ -28,6 +28,8 @@ import org.jboss.aerogear.unifiedpush.dao.ResultsStream;
  * for the different Variants.
  */
 public interface ClientInstallationService {
+    
+    void generateInstalations();
 
     /**
      * Store a new Installation object on the database.

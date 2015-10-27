@@ -20,6 +20,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.ejb.Stateless;
 import javax.enterprise.event.Event;
@@ -53,6 +54,8 @@ import org.jboss.aerogear.unifiedpush.utils.AeroGearLogger;
  */
 @Stateless
 public class TokenLoader {
+
+    private static final AtomicInteger counter = new AtomicInteger(0);
 
     private final AeroGearLogger logger = AeroGearLogger.getInstance(TokenLoader.class);
 
@@ -95,6 +98,8 @@ public class TokenLoader {
      * @param msg holder object containing the payload and info about the effected variants
      */
     public void loadAndQueueTokenBatch(@Observes @Dequeue MessageHolderWithVariants msg) {
+        System.out.println("--- " + Thread.currentThread().getId() + " > TokenLoader.loadAndQueueTokenBatch() " + counter.getAndIncrement());
+
         final UnifiedPushMessage message = msg.getUnifiedPushMessage();
         final VariantType variantType = msg.getVariantType();
         final Collection<Variant> variants = msg.getVariants();

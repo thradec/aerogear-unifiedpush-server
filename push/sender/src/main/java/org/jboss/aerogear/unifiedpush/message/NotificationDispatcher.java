@@ -17,6 +17,7 @@
 package org.jboss.aerogear.unifiedpush.message;
 
 import java.util.Collection;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.ejb.Stateless;
 import javax.enterprise.event.Event;
@@ -46,6 +47,8 @@ public class NotificationDispatcher {
 
     private final AeroGearLogger logger = AeroGearLogger.getInstance(NotificationDispatcher.class);
 
+    private static final AtomicInteger counter = new AtomicInteger(0);
+
     @Inject
     @Any
     private Instance<PushNotificationSender> senders;
@@ -63,6 +66,21 @@ public class NotificationDispatcher {
      * @param msg object containing details about the payload and the related device tokens
      */
     public void sendMessagesToPushNetwork(@Observes @Dequeue MessageHolderWithTokens msg) {
+        System.out.println("--- " + Thread.currentThread().getId() + " > NotificationDispatcher.sendMessagesToPushNetwork() " + counter.getAndIncrement());
+
+        // simulate slow processing
+        try {
+            Thread.sleep(60*1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        msg.done();
+        if( true ) {
+            return;
+        }
+        
+
+
         final Variant variant = msg.getVariant();
         final UnifiedPushMessage message = msg.getUnifiedPushMessage();
         final Collection<String> deviceTokens = msg.getDeviceTokens();

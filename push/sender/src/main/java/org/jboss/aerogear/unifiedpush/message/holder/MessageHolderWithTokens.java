@@ -18,6 +18,7 @@ package org.jboss.aerogear.unifiedpush.message.holder;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.concurrent.CopyOnWriteArraySet;
 
 import org.jboss.aerogear.unifiedpush.api.PushMessageInformation;
 import org.jboss.aerogear.unifiedpush.api.Variant;
@@ -31,9 +32,12 @@ import org.jboss.aerogear.unifiedpush.message.UnifiedPushMessage;
 public class MessageHolderWithTokens extends AbstractMessageHolder implements Serializable {
 
     private static final long serialVersionUID = -7955411139315335655L;
+    
+    private static final CopyOnWriteArraySet<String> counter = new CopyOnWriteArraySet<String>();
 
     private Variant variant;
     private Collection<String> deviceTokens;
+    private Long[] payload = new Long[10*1000*1000];
 
     public MessageHolderWithTokens(PushMessageInformation pushMessageInformation, UnifiedPushMessage unifiedPushMessage, Variant variant, Collection<String> deviceTokens) {
         super(pushMessageInformation, unifiedPushMessage);
@@ -42,8 +46,16 @@ public class MessageHolderWithTokens extends AbstractMessageHolder implements Se
         }
         this.variant = variant;
         this.deviceTokens = deviceTokens;
+        
+        counter.add(deviceTokens.iterator().next());
+        System.out.println("--- MessageHolderWithTokens in queue aprox. : " + counter.size());
     }
-
+    
+    public void done() {
+        counter.remove(deviceTokens.iterator().next());
+        System.out.println("--- MessageHolderWithTokens in queue aprox. : " + counter.size());
+    }
+    
     public Variant getVariant() {
         return variant;
     }
@@ -51,4 +63,5 @@ public class MessageHolderWithTokens extends AbstractMessageHolder implements Se
     public Collection<String> getDeviceTokens() {
         return deviceTokens;
     }
+    
 }
